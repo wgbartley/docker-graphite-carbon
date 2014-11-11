@@ -6,4 +6,4 @@ sudo docker run -t -i \
 	-v $(pwd)/data:/storage \
 	-p 80 \
 	-p 2003:2003 \
-	localhost:5000/graphite-carbon /bin/bash
+	wgbartley/graphite-carbon /bin/bash

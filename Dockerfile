@@ -1,7 +1,7 @@
-FROM localhost:5000/ubuntu-minimal
+FROM phusion/baseimage:latest
 
-RUN apt-get -y update
-RUN apt-get -y install python-dev python-flup python-pip expect git memcached sqlite3 libcairo2 libcairo2-dev python-cairo pkg-config supervisor
+RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
+RUN apt-get -y update && apt-get -y install python-dev python-flup python-pip expect git memcached sqlite3 libcairo2 libcairo2-dev python-cairo pkg-config supervisor
 
 # python dependencies
 RUN pip install \
@@ -45,6 +45,7 @@ ADD scripts/carbon.conf /etc/supervisor/conf.d/carbon.conf
 ADD scripts/graphite.conf /etc/supervisor/conf.d/graphite.conf
 ADD scripts/start.sh /start.sh
 
+RUN touch /.firstboot
 RUN chmod +x /start.sh
 
 
@@ -53,7 +54,5 @@ EXPOSE 80 2003
 
 WORKDIR /
 ENV HOME /root
-
-ADD scripts/.firstboot /.firstboot
 
 CMD ["/start.sh"]
